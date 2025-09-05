@@ -11,9 +11,9 @@ import time
 service = Service(r"C:\Users\Nathan\Downloads\chromedriver-win64\chromedriver-win64\chromedriver.exe")
 driver = webdriver.Chrome(service=service)
 
-# Path to your saved HTML file
+# loop - allows user to choose to launch a set HTML doc or a real webpage
 while True:
-    choice = input("Do you want to test on a HTML page or a webpage (html/web)?")
+    choice = input("Do you want to test on a HTML page or a webpage (html/web)?").lower()
     if choice == "html":
         file_path = os.path.abspath("htmlTEST.html")
         driver.get("file://" + file_path)
@@ -26,14 +26,14 @@ while True:
 
 time.sleep(1)  # allow page to load
 
-# --- Get Chrome window position & size ---
+# Get Chrome window position & size
 chrome_windows = [w for w in gw.getAllWindows() if "Chrome" in w.title]
 if not chrome_windows:
     raise RuntimeError("No Chrome window found!")
 win = chrome_windows[0]
 window_left, window_top = win.left, win.top
 
-# --- Collect button coordinates ---
+# Collect button coordinates
 buttons = driver.find_elements("tag name", "button")
 button_centers = []
 for btn in buttons:
@@ -44,7 +44,7 @@ for btn in buttons:
     button_centers.append((center_x, center_y))
     print(f"Button '{btn.text}' at {center_x},{center_y}")
 
-# Settings
+# Settings - allows user to choose the pull radius and strength of the aim assist
 slow_radius = int(input("What do you want the pull radius (px) to be? (100px is recommended)"))   # slowdown zone
 print(f"The radius of the effect is {slow_radius}px")
 max_lock_strength = float(input("How strong (0.1 - 1) do you want the pull to be? (0.8 is recommended)"))  # maximum pull force at button center
