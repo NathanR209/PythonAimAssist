@@ -19,10 +19,16 @@ while True:
         driver.get("file://" + file_path)
         break
     elif choice == "web":
-        driver.get("https://www.google.com/")
+        while True:
+            choice = input(
+                "What website do you want to test (say the website name with .com at the end | ex: google.com)?").lower()
+            driver.get(f"https://www.{choice}/")
+            break
         break
     else:
         print("Please enter either html or web")
+
+
 
 time.sleep(1)  # allow page to load
 
@@ -44,11 +50,15 @@ for btn in buttons:
     button_centers.append((center_x, center_y))
     print(f"Button '{btn.text}' at {center_x},{center_y}")
 
+if not button_centers:
+    raise RuntimeError("No button centers found!")
+
 # Settings - allows user to choose the pull radius and strength of the aim assist
 slow_radius = int(input("What do you want the pull radius (px) to be? (100px is recommended)"))   # slowdown zone
 print(f"The radius of the effect is {slow_radius}px")
 max_lock_strength = float(input("How strong (0.1 - 1) do you want the pull to be? (0.8 is recommended)"))  # maximum pull force at button center
 print(f"The maximum lock strength is {max_lock_strength}")
+print("Start Testing!")
 
 # Track last position
 last_pos = pyautogui.position()
